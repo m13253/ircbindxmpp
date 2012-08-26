@@ -1,0 +1,10 @@
+ircbindxmpp
+========
+A python program that forwards messages between IRC and XMPP
+
+Better with XMPP groups powered by https://github.com/lilydjwg/xmpptalk
+
+Requirement:
+  python (>=3.0)
+  python-sleekxmpp
+

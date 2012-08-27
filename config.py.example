@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import config
+
+XMPP = {
+    JID: 'ircbot@example.com/bot',
+    server: 'example.com',
+    port: 5222,
+    password: '********',
+    forward: [('from@example.com', '#channel')]
+}
+
+IRC = {
+    server: 'irc.freenode.net',
+    port: 6667,
+    nick: 'xmppbot',
+    password: '', # Leave this empty if you do not have a password
+    forward: [('#channel', 'to@example.com')]
+}
+
+# vim: et ft=python sts=4 sw=4 ts=4

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 import sleekxmpp
+import sys
 
 import config
 import libirc
-import sys
 
 def getBareJID(jid):
     return jid.split('/', 1)[0]

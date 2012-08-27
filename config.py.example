@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import config
-
 XMPP = {
     JID: 'ircbot@example.com/bot',
     server: 'example.com',

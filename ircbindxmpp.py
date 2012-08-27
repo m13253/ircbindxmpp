@@ -4,6 +4,7 @@ import sleekxmpp
 
 import config
 import libirc
+import time
 
 def getBareJID(jid):
     return jid.split('/', 1)[0]
@@ -26,7 +27,7 @@ class XMPPBot(sleekxmpp.ClientXMPP):
             for i in config.XMPP['forward']:
                 if i[0]==from_jid:
                     for l in msg['body'].splitlines():
-                        print('< %s' % l.encode('utf-8', 'replace'))
+                        sys.stderr.write('< %s\n' % l.encode('utf-8', 'replace'))
                         irc.say(i[1], '(GTalk) %s' % l)
         except UnicodeEncodeError:
             pass
@@ -56,10 +57,16 @@ if __name__=='__main__':
             if not line:
                 continue
             if line['cmd']=='PRIVMSG':
+                if not line['msg']:
+                    continue
+                if line['msg'].startswith('\x01ACTION '):
+                    msg='* %s (IRC) %s' % (line['nick'], line['msg'][8:].rstrip('\x01'))
+                else:
+                    msg='%s (IRC): %s' % (line['nick'], line['msg']
                 for i in config.IRC['forward']:
                     if line['dest']==i[0]:
-                        print('> %s' % line['msg'].encode('utf-8', 'replace'))
-                        xmpp.send_message(mto=i[1], mbody='%s (IRC): %s' % (line['nick'], line['msg']), mtype='chat')
+                        sys.stderr.write('> %s\n' % line['msg'])
+                        xmpp.send_message(mto=i[1], mbody=msg, mtype='chat')
         else:
             xmpp.disconnect(wait=True)
     except KeyboardInterrupt:
@@ -67,5 +74,7 @@ if __name__=='__main__':
         irc.quit()
     except UnicodeEncodeError:
         pass
+    except Exception as e:
+        sys.stderr.write('Exception: %s\n' % e)
 
 # vim: et ft=python sts=4 sw=4 ts=4

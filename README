@@ -6,5 +6,6 @@ Better with XMPP groups powered by https://github.com/lilydjwg/xmpptalk
 
 Requirement:
   python (>=3.0)
-  python-sleekxmpp
+  python-sleekxmpp (https://github.com/fritzy/SleekXMPP)
+  libirc (https://github.com/m13253/libirc)
 

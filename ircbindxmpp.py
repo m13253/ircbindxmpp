@@ -58,6 +58,8 @@ if __name__=='__main__':
             if line['cmd']=='PRIVMSG':
                 if not line['msg']:
                     continue
+                if line['nick']=='simibot' or line['msg'].startswith('simibot:'):
+                    continue
                 if line['msg'].startswith('\x01ACTION '):
                     msg='* %s (IRC) %s' % (line['nick'], line['msg'][8:].rstrip('\x01'))
                 else:

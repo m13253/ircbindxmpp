@@ -63,7 +63,7 @@ if __name__=='__main__':
                 if line['msg'].startswith('\x01ACTION '):
                     msg='* %s (IRC) %s' % (line['nick'], line['msg'][8:].rstrip('\x01'))
                 else:
-                    msg='%s (IRC): %s' % (line['nick'], line['msg']
+                    msg='%s (IRC): %s' % (line['nick'], line['msg'])
                 for i in config.IRC['forward']:
                     if line['dest']==i[0]:
                         sys.stderr.write('> %s\n' % line['msg'])

@@ -73,6 +73,8 @@ if __name__=='__main__':
         irc.quit()
     except UnicodeEncodeError:
         pass
+    except SystemExit:
+        raise
     except Exception as e:
         sys.stderr.write('Exception: %s\n' % e)
 

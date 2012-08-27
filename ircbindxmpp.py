@@ -56,8 +56,10 @@ if __name__=='__main__':
             line=irc.parse(block=True)
             if not line:
                 continue
-            if line['cmd']=='PRIVMSG' and msg:
-                if msg.startswith('\x01ACTION '):
+            if line['cmd']=='PRIVMSG':
+                if not line['msg']:
+                    continue
+                if line['msg'].startswith('\x01ACTION '):
                     msg='* %s (IRC) %s' % (line['nick'], line['msg'][8:].rstrip('\x01'))
                 else:
                     msg='%s (IRC): %s' % (line['nick'], line['msg']

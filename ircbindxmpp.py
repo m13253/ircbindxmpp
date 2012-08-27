@@ -6,9 +6,6 @@ import sys
 import config
 import libirc
 
-def getBareJID(jid):
-    return jid.split('/', 1)[0]
-
 class XMPPBot(sleekxmpp.ClientXMPP):
     def __init__(self, jid, password):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)

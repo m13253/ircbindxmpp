@@ -2,7 +2,7 @@ ircbindxmpp
 ========
 A python program that forwards messages between IRC and XMPP
 
-Better with XMPP groups powered by https://github.com/lilydjwg/xmpptalk
+Better with XMPP groups powered by xmpptalk (https://github.com/m13253/xmpptalk)
 
 Requirement:
   python (>=3.0)

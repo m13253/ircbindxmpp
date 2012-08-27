@@ -27,7 +27,7 @@ class XMPPBot(sleekxmpp.ClientXMPP):
             for i in config.XMPP['forward']:
                 if i[0]==from_jid:
                     for l in msg['body'].splitlines():
-                        sys.stderr.write('< %s\n' % l.encode('utf-8', 'replace'))
+                        sys.stderr.write('< %s\n' % l)
                         irc.say(i[1], '(GTalk) %s' % l)
         except UnicodeEncodeError:
             pass

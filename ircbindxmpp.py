@@ -4,7 +4,6 @@ import sleekxmpp
 
 import config
 import libirc
-import time
 
 def getBareJID(jid):
     return jid.split('/', 1)[0]

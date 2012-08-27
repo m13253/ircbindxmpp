@@ -19,14 +19,17 @@ class XMPPBot(sleekxmpp.ClientXMPP):
         self.get_roster()
 
     def message(self, msg):
-        if msg['type'] not in ('chat', 'normal'):
-            return
-        from_jid=msg['from'].bare
-        for i in config.XMPP['forward']:
-            if i[0]==from_jid:
-                for l in msg['body'].splitlines():
-                    print('< %s' % l)
-                    irc.say(i[1], '(GTalk) %s' % l)
+        try:
+            if msg['type'] not in ('chat', 'normal'):
+                return
+            from_jid=msg['from'].bare
+            for i in config.XMPP['forward']:
+                if i[0]==from_jid:
+                    for l in msg['body'].splitlines():
+                        print('< %s' % l.encode('utf-8', 'replace'))
+                        irc.say(i[1], '(GTalk) %s' % l)
+        except UnicodeEncodeError:
+            pass
 
 if __name__=='__main__':
     try:
@@ -55,12 +58,14 @@ if __name__=='__main__':
             if line['cmd']=='PRIVMSG':
                 for i in config.IRC['forward']:
                     if line['dest']==i[0]:
-                        print('> %s' % line['msg'])
+                        print('> %s' % line['msg'].encode('utf-8', 'replace'))
                         xmpp.send_message(mto=i[1], mbody='%s (IRC): %s' % (line['nick'], line['msg']), mtype='chat')
         else:
             xmpp.disconnect(wait=True)
     except KeyboardInterrupt:
         xmpp.disconnect(wait=True)
         irc.quit()
+    except UnicodeEncodeError:
+        pass
 
 # vim: et ft=python sts=4 sw=4 ts=4

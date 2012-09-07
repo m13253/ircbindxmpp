@@ -65,7 +65,16 @@ if __name__=='__main__':
                         sys.stderr.write('> %s\n' % line['msg'])
                         xmpp.send_message(mto=i[1], mbody=msg, mtype='chat')
         else:
-            xmpp.disconnect(wait=True)
+            try:
+                xmpp.disconnect(wait=True)
+            except:
+                pass
+            time.sleep(10)
+            sys.stderr.write("Restarting...\n")
+            try:
+                os.execlp("python3", "python3", __file__)
+            except:
+                os.execlp("python", "python", __file__)
     except KeyboardInterrupt:
         xmpp.disconnect(wait=True)
         irc.quit()

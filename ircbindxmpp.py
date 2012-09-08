@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sleekxmpp
+import socket
 import sys
 
 import config
@@ -65,16 +66,7 @@ if __name__=='__main__':
                         sys.stderr.write('> %s\n' % line['msg'])
                         xmpp.send_message(mto=i[1], mbody=msg, mtype='chat')
         else:
-            try:
-                xmpp.disconnect(wait=True)
-            except:
-                pass
-            time.sleep(10)
-            sys.stderr.write("Restarting...\n")
-            try:
-                os.execlp("python3", "python3", __file__)
-            except:
-                os.execlp("python", "python", __file__)
+            raise socket.error
     except KeyboardInterrupt:
         xmpp.disconnect(wait=True)
         irc.quit()
@@ -82,6 +74,17 @@ if __name__=='__main__':
         pass
     except SystemExit:
         raise
+    except socket.error:
+        try:
+            xmpp.disconnect(wait=True)
+        except:
+            pass
+        time.sleep(10)
+        sys.stderr.write("Restarting...\n")
+        try:
+            os.execlp("python3", "python3", __file__)
+        except:
+            os.execlp("python", "python", __file__)
     except Exception as e:
         sys.stderr.write('Exception: %s\n' % e)
 

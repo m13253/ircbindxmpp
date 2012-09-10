@@ -29,6 +29,19 @@ class XMPPBot(sleekxmpp.ClientXMPP):
                         irc.say(i[1], '(GTalk) %s' % l)
         except UnicodeEncodeError:
             pass
+        except socket.error:
+            try:
+                self.disconnect(wait=True)
+            except:
+                pass
+            time.sleep(10)
+            sys.stderr.write("Restarting...\n")
+            try:
+                os.execlp("python3", "python3", __file__)
+            except:
+                os.execlp("python", "python", __file__)
+        except Exception as e:
+            sys.stderr.write('Exception: %s\n' % e)
 
 if __name__=='__main__':
     try:

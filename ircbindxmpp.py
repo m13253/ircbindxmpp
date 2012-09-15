@@ -46,7 +46,7 @@ class XMPPBot(sleekxmpp.ClientXMPP):
 if __name__=='__main__':
     try:
         irc=libirc.IRCConnection()
-        irc.connect(config.IRC['server'], config.IRC['port'])
+        irc.connect((config.IRC['server'], config.IRC['port']))
         irc.setnick(config.IRC['nick'])
         irc.setuser()
         if config.IRC['password']:

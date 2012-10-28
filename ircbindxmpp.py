@@ -3,6 +3,7 @@
 import sleekxmpp
 import socket
 import sys
+import time
 
 import config
 import libirc

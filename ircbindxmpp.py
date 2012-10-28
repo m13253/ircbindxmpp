@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sleekxmpp
 import socket
 import sys

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import sleekxmpp
 import socket
 import sys
@@ -8,6 +9,9 @@ import time
 
 import config
 import libirc
+
+def FilterBadChars(s):
+    return re.sub('[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f]', '\ufffd', s)
 
 class XMPPBot(sleekxmpp.ClientXMPP):
     def __init__(self, jid, password):
@@ -73,12 +77,12 @@ if __name__=='__main__':
                 if not line['msg']:
                     continue
                 if line['msg'].startswith('\x01ACTION '):
-                    msg='* %s (IRC) %s' % (line['nick'], line['msg'][8:].rstrip('\x01'))
+                    msg='* %s (IRC) %s' % (line['nick'], FilterBadChars(line['msg'][8:].rstrip('\x01')))
                 else:
-                    msg='%s (IRC): %s' % (line['nick'], line['msg'])
+                    msg='%s (IRC): %s' % (line['nick'], FilterBadChars(line['msg']))
                 for i in config.IRC['forward']:
                     if line['dest']==i[0]:
-                        sys.stderr.write('> %s\n' % line['msg'])
+                        sys.stderr.write('> %s\n' % FilterBadChars(line['msg']))
                         xmpp.send_message(mto=i[1], mbody=msg, mtype='chat')
         else:
             raise socket.error

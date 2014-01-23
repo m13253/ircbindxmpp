@@ -69,6 +69,7 @@ if __name__=='__main__':
         else:
             irc.quit('Cannot connect to XMPP.')
             exit()
+        irc.sock.settimeout(43200)
         while irc.sock:
             line=irc.parse(block=True)
             if not line:

@@ -9,3 +9,5 @@ Requirement:
   python-sleekxmpp (https://github.com/fritzy/SleekXMPP)
   libirc (https://github.com/m13253/libirc)
 
+Bug: This program mistriously terminates sometime. Make sure you restart it in
+time.

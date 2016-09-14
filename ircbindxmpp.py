@@ -49,6 +49,7 @@ class XMPPBot(sleekxmpp.ClientXMPP):
                 os.execlp("python", "python", __file__)
         except Exception as e:
             sys.stderr.write('Exception: %s\n' % e)
+            raise
 
 if __name__=='__main__':
     try:
@@ -108,5 +109,6 @@ if __name__=='__main__':
             os.execlp("python", "python", __file__)
     except Exception as e:
         sys.stderr.write('Exception: %s\n' % e)
+        raise
 
 # vim: et ft=python sts=4 sw=4 ts=4

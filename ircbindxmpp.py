@@ -11,6 +11,7 @@ import config
 import libirc
 
 def FilterBadChars(s):
+    s = re.sub('\x03[0-9]{1,2}(,[0-9]{1,2})?|[\x02\x0f\x16\x1d\x1f]', '', s)
     return re.sub('[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f]', '\ufffd', s)
 
 class XMPPBot(sleekxmpp.ClientXMPP):

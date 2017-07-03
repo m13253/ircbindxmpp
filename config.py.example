@@ -13,7 +13,7 @@ IRC = {
     'port': 6667,
     'ssl': False,
     'nick': 'xmppbot',
-    'password': '', # Leave this empty if you do not have a password
+    'password': '',  # Leave this empty if you do not have a password
     'forward': [('#channel', 'to@example.com')]
 }
 

@@ -10,11 +10,14 @@ import time
 import config
 import libirc
 
+
 def FilterBadChars(s):
     s = re.sub('\x03[0-9]{1,2}(,[0-9]{1,2})?|[\x02\x03\x0f\x16\x1d\x1f]', '', s)
     return re.sub('[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f]', '\ufffd', s)
 
+
 class XMPPBot(sleekxmpp.ClientXMPP):
+
     def __init__(self, jid, password):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)
         self.add_event_handler("session_start", self.start)
@@ -28,9 +31,9 @@ class XMPPBot(sleekxmpp.ClientXMPP):
         try:
             if msg['type'] not in ('chat', 'normal'):
                 return
-            from_jid=msg['from'].bare
+            from_jid = msg['from'].bare
             for i in config.XMPP['forward']:
-                if i[0]==from_jid:
+                if i[0] == from_jid:
                     for l in msg['body'].splitlines():
                         sys.stderr.write('< %s\n' % l)
                         irc.say(i[1], '(GTalk) %s' % l)
@@ -51,9 +54,9 @@ class XMPPBot(sleekxmpp.ClientXMPP):
             sys.stderr.write('Exception: %s\n' % e)
             raise
 
-if __name__=='__main__':
+if __name__ == '__main__':
     try:
-        irc=libirc.IRCConnection()
+        irc = libirc.IRCConnection()
         irc.connect((config.IRC['server'], config.IRC['port']), use_ssl=config.IRC['ssl'])
         irc.setnick(config.IRC['nick'])
         irc.setuser()
@@ -61,11 +64,11 @@ if __name__=='__main__':
             irc.say('NickServ', 'identify %s' % config.IRC['password'])
         for i in config.IRC['forward']:
             irc.join(i[0])
-        xmpp=XMPPBot(config.XMPP['JID'], config.XMPP['password'])
-        xmpp.register_plugin('xep_0030') # Service Discovery
-        xmpp.register_plugin('xep_0004') # Data Forms
-        xmpp.register_plugin('xep_0060') # PubSub
-        xmpp.register_plugin('xep_0199') # XMPP Ping
+        xmpp = XMPPBot(config.XMPP['JID'], config.XMPP['password'])
+        xmpp.register_plugin('xep_0030')  # Service Discovery
+        xmpp.register_plugin('xep_0004')  # Data Forms
+        xmpp.register_plugin('xep_0060')  # PubSub
+        xmpp.register_plugin('xep_0199')  # XMPP Ping
         if xmpp.connect((config.XMPP['server'], config.XMPP['port'])):
             xmpp.process(block=False)
         else:
@@ -73,18 +76,18 @@ if __name__=='__main__':
             exit()
         irc.sock.settimeout(43200)
         while irc.sock:
-            line=irc.parse(block=True)
+            line = irc.parse(block=True)
             if not line:
                 continue
-            if line['cmd']=='PRIVMSG':
+            if line['cmd'] == 'PRIVMSG':
                 if not line['msg']:
                     continue
                 if line['msg'].startswith('\x01ACTION '):
-                    msg='* %s (IRC) %s' % (line['nick'], FilterBadChars(line['msg'][8:].rstrip('\x01')))
+                    msg = '* %s (IRC) %s' % (line['nick'], FilterBadChars(line['msg'][8:].rstrip('\x01')))
                 else:
-                    msg='%s (IRC): %s' % (line['nick'], FilterBadChars(line['msg']))
+                    msg = '%s (IRC): %s' % (line['nick'], FilterBadChars(line['msg']))
                 for i in config.IRC['forward']:
-                    if line['dest']==i[0]:
+                    if line['dest'] == i[0]:
                         sys.stderr.write('> %s\n' % FilterBadChars(line['msg']))
                         xmpp.send_message(mto=i[1], mbody=msg, mtype='chat')
         else:
